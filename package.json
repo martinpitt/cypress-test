@@ -10,5 +10,10 @@
   "license": "MIT",
   "devDependencies": {
     "cypress": "^3.1.0"
+  },
+  "scripts": {
+    "test": "cypress run",
+    "test:headed": "cypress run --headed",
+    "open": "cypress open"
   }
 }
