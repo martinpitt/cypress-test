@@ -1,16 +1,5 @@
-/* HACK: https://github.com/cypress-io/cypress/issues/771
- * requires this in /etc/hosts: 127.0.0.2 cockpittest
- */
-// const cockpit_url = 'https://cockpittest:9091';
-
-/* or disable SSL:
- *   printf '[Webservice]\nAllowUnencrypted = true\n' >> /etc/cockpit/cockpit.conf
- */
-// FIXME: set baseUrl
-const cockpit_url = 'http://127.0.0.2:9091';
-
 function login() {
-    cy.visit(cockpit_url + "/system");
+    cy.visit("/system");
     cy.get('#authorized-input').
         click().
         should('be.checked');
@@ -20,8 +9,20 @@ function login() {
 }
 
 describe('cockpit demo', () => {
-    it('"Other options" expansion', () => {
-        cy.visit(cockpit_url);
+    beforeEach('start VM', function () {
+        cy.task('startVM', 'fedora-29').then(url => {
+            Cypress.config('baseUrl', url);
+            cy.task('runVM', "printf '[Webservice]\\nAllowUnencrypted = true\\n' >> /etc/cockpit/cockpit.conf; systemctl start cockpit.socket; systemctl status cockpit.socket").then(out => {
+            });
+        });
+    });
+
+    afterEach('stop VM', function() {
+        cy.task('stopVM');
+    });
+
+    it('"Other options" expansion', function () {
+        cy.visit('/');
         cy.get('#server-field').should('not.be.visible');
         cy.get('#show-other-login-options').should('be.visible').click();
         cy.get('#server-field').should('be.visible');
@@ -29,10 +30,10 @@ describe('cockpit demo', () => {
         cy.get('#server-field').should('not.be.visible');
     });
 
-    it('Change hostname', () => {
+    it('Change hostname', function () {
         login();
         // HACK: cypress doesn't handle frames, so go to specific frame
-        cy.visit(cockpit_url + "/cockpit/@localhost/system/index.html");
+        cy.visit("/cockpit/@localhost/system/index.html");
         cy.get('#system_information_hostname_button').
             should('contain', 'localhost.localdomain').
             click();
