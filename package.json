@@ -9,7 +9,7 @@
     "cypress": "^3.1.0"
   },
   "scripts": {
-    "prepare": "[ -d bots ] || { git fetch --depth=1 https://github.com/cockpit-project/cockpit.git && git checkout --force FETCH_HEAD -- bots/ && git reset bots; } && bots/image-download fedora-29 && bots/image-customize -v -i cockpit fedora-29",
+    "prepare": "[ -d bots ] || { git fetch --depth=1 https://github.com/cockpit-project/cockpit.git && git checkout --force FETCH_HEAD -- bots/ && git reset bots; } && bots/image-download fedora-29 && bots/image-customize -v -i cockpit -s test/vm.install fedora-29",
     "test": "cypress run",
     "test:headed": "cypress run --headed",
     "cypress": "cypress open"

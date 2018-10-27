@@ -24,7 +24,7 @@ Start from a fresh clone of this repository.
 2. Get [Cockpit's bots/ directory](https://github.com/cockpit-project/cockpit/tree/master/bots/)
    which provides access to a lot of standard test VMs and the mechanics how to
    start/stop and interact with them. Use that to build a VM image with Cockpit
-   pre-installed:
+   pre-installed and enabled:
 
        npm run prepare
 

@@ -10,11 +10,7 @@ function login() {
 
 describe('cockpit demo', () => {
     beforeEach('start VM', function () {
-        cy.task('startVM', 'fedora-29').then(url => {
-            Cypress.config('baseUrl', url);
-            cy.task('runVM', "printf '[Webservice]\\nAllowUnencrypted = true\\n' >> /etc/cockpit/cockpit.conf; systemctl start cockpit.socket; systemctl status cockpit.socket").then(out => {
-            });
-        });
+        cy.task('startVM', 'fedora-29').then(url => Cypress.config('baseUrl', url));
     });
 
     afterEach('stop VM', function() {
