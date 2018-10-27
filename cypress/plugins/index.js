@@ -11,7 +11,7 @@ module.exports = (on, config) => {
 
             // no, start a new VM
             return new Promise((resolve, reject) => {
-                let proc = child_process.spawn("/home/martin/upstream/cockpit/bots/machine/testvm.py", [image],
+                let proc = child_process.spawn("bots/machine/testvm.py", [image],
                                                { stdio: ["pipe", "pipe", "inherit"] });
                 let buf = "";
                 vm_proc = proc.pid;

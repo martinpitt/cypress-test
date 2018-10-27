@@ -1,0 +1,6 @@
+/bots
+/cypress/screenshots
+/cypress/videos
+/node_modules
+/test/images
+/package-lock.json
