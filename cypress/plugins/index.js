@@ -2,6 +2,27 @@ const child_process = require('child_process');
 
 var vm_proc, ssh_args, cockpit_url;
 
+// poor man's polling implementation
+function waitpid(pid) {
+    return new Promise((resolve, reject) => {
+        function check() {
+            try {
+                process.kill(pid);
+                // succeeds → process still exists, poll again
+                setTimeout(check, 50);
+            } catch(e) {
+                // ESRCH → process is gone
+                if (e.code == "ESRCH")
+                    resolve(null);
+                else
+                    throw e;
+            }
+        }
+
+        check();
+    });
+}
+
 module.exports = (on, config) => {
     on('task', {
         startVM: image => {
@@ -30,8 +51,9 @@ module.exports = (on, config) => {
 
         stopVM: () => {
             process.kill(vm_proc);
-            vm_proc = null;
-            return null;
+            let p = waitpid(vm_proc);
+            p.then(() => { vm_proc = null; });
+            return p;
         },
 
         runVM: command => {
