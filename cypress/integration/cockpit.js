@@ -3,7 +3,7 @@ const visit_opts = { auth: { username: 'admin', password: 'foobar' } };
 
 describe('cockpit demo', () => {
     beforeEach('start VM', function () {
-        cy.task('startVM', 'fedora-29').then(url => Cypress.config('baseUrl', url));
+        cy.task('startVM').then(url => Cypress.config('baseUrl', url));
 
         // Programmatically enable the "Reuse my password for privileged tasks" option
         cy.server({
